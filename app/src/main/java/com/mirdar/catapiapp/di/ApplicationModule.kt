@@ -1,9 +1,15 @@
+import com.mirdar.catapiapp.data.local.model.RealmBreed
+import com.mirdar.catapiapp.data.local.model.RealmImage
+import com.mirdar.catapiapp.data.local.model.RealmImageDetail
+import com.mirdar.catapiapp.data.local.model.RealmWeight
 import com.mirdar.catapiapp.data.remote.CatApiService
 import com.mirdar.catapiapp.data.remote.common.RequestInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.realm.kotlin.Realm
+import io.realm.kotlin.RealmConfiguration
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -50,4 +56,19 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideCatApiService(retrofit: Retrofit) = retrofit.create(CatApiService::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideRealmDatabase(): Realm {
+        val config = RealmConfiguration.create(
+            schema = setOf(
+                RealmImage::class,
+                RealmImageDetail::class,
+                RealmBreed::class,
+                RealmWeight::class
+            )
+        )
+        return Realm.open(config)
+    }
 }
