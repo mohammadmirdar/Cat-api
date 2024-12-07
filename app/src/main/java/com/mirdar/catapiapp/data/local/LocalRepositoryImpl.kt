@@ -1,26 +1,34 @@
 package com.mirdar.catapiapp.data.local
 
+import com.mirdar.catapiapp.data.local.model.RealmImage
+import com.mirdar.catapiapp.data.local.model.RealmImageDetail
+import com.mirdar.catapiapp.data.local.model.toDomain
 import com.mirdar.catapiapp.domain.model.CatImage
 import com.mirdar.catapiapp.domain.model.ImageDetail
+import com.mirdar.catapiapp.domain.model.toRealm
 import io.realm.kotlin.Realm
 import javax.inject.Inject
 
 class LocalRepositoryImpl @Inject constructor(
     private val realm: Realm
-) : LocalRepository{
+) : LocalRepository {
     override suspend fun insertImage(image: CatImage) {
-        realm
+        realm.writeBlocking {
+            this.copyToRealm(image.toRealm())
+        }
     }
 
     override suspend fun insertImageDetail(imageDetail: ImageDetail) {
-        TODO("Not yet implemented")
+        realm.writeBlocking {
+            this.copyToRealm(imageDetail.toRealm())
+        }
     }
 
     override suspend fun readImageList(): List<CatImage> {
-        TODO("Not yet implemented")
+        return realm.where(RealmImage::class).findAll().map { it.toDomain() }
     }
 
-    override suspend fun readImageDetail(imageId: String): ImageDetail {
-        TODO("Not yet implemented")
+    override suspend fun readImageDetail(imageId: String): ImageDetail? {
+        return realm.where(RealmImageDetail::class).equalTo("id", imageId).findFirst()?.toDomain()
     }
 }

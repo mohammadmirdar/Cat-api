@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mirdar.catapiapp.ui.image_list.ImageListScreen
 
 @Composable
 fun AppNavHost(
@@ -18,7 +19,7 @@ fun AppNavHost(
         startDestination = startDestination
     ) {
         composable(NavigationItem.ImageList.route) {
-
+            ImageListScreen(navController)
         }
 
         composable(NavigationItem.ImageDetail.route) {

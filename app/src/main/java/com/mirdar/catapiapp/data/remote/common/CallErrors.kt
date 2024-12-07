@@ -1,9 +1,6 @@
-package com.vapebothq.vendingmachineapp.data.common
+package com.mirdar.catapiapp.data.remote.common
 
 
-/**
- * Created by Rim Gazzah on 8/28/20.
- **/
 sealed class CallErrors {
     data object ErrorEmptyData : CallErrors()
     data object ErrorServer: CallErrors()

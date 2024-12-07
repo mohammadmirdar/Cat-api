@@ -1,5 +1,7 @@
 package com.vapebothq.vendingmachineapp.data.common
 
+import com.mirdar.catapiapp.data.remote.common.CallErrors
+
 /**
  * Created by Rim Gazzah on 8/28/20.
  **/

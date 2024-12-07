@@ -1,5 +1,6 @@
 package com.mirdar.catapiapp.data.local.model
 
+import com.mirdar.catapiapp.domain.model.CatImage
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
@@ -11,3 +12,5 @@ class RealmImage : RealmObject {
     var height: Int = 0
     var isFavourite: Boolean = false
 }
+
+fun RealmImage.toDomain(): CatImage = CatImage(id, url, width, height, isFavourite)

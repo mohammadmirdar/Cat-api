@@ -7,7 +7,7 @@ data class CatImage(
     val url : String,
     val width : Int,
     val height : Int,
-    val isFavourite : Boolean
+    val isFavourite : Boolean = false
 )
 
 fun CatImage.toRealm() : RealmImage = RealmImage().also {

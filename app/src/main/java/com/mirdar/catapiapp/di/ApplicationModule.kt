@@ -55,7 +55,7 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideCatApiService(retrofit: Retrofit) = retrofit.create(CatApiService::class.java)
+    fun provideCatApiService(retrofit: Retrofit) : CatApiService = retrofit.create(CatApiService::class.java)
 
 
     @Provides
