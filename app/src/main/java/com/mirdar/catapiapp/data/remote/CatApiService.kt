@@ -11,7 +11,7 @@ interface CatApiService {
 
     @GET("search")
     suspend fun getImages(
-        @Query("limit") limit: Int = 10
+        @Query("limit") limit: Int = 40
     ) : Response<List<ImageRes>>
 
 

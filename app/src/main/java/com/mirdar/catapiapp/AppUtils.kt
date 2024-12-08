@@ -1,3 +1,5 @@
+package com.mirdar.catapiapp
+
 object AppUtils {
 
     const val BASE_URL: String = "https://api.thecatapi.com/v1/images/"

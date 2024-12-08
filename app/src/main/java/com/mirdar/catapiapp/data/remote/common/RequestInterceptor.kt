@@ -1,12 +1,11 @@
 package com.mirdar.catapiapp.data.remote.common
 
-import AppUtils
+import com.mirdar.catapiapp.AppUtils
 import okhttp3.Interceptor
 import okhttp3.Response
-import javax.inject.Inject
 
 
-class RequestInterceptor @Inject constructor() : Interceptor {
+class RequestInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
 
         val request = chain.request()

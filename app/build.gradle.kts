@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.org.jetbrains.kotlin.kapt)
     alias(libs.plugins.hiltGradlePlugin)
     id ("io.realm.kotlin")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -33,17 +33,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -51,6 +51,7 @@ android {
         }
     }
 }
+
 hilt {
     enableAggregatingTask = false
 }
@@ -80,9 +81,10 @@ dependencies {
 
     implementation(libs.hilt.compose)
     implementation(libs.hilt)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
+    ksp ("com.google.dagger:dagger-compiler:2.53") // Dagger compiler
     androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.android.compiler)
+//    kaptAndroidTest(libs.hilt.android.compiler)
 
     implementation(libs.coil.compose)
 

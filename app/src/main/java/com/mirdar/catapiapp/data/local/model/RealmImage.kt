@@ -4,7 +4,7 @@ import com.mirdar.catapiapp.domain.model.CatImage
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
-class RealmImage : RealmObject {
+open class RealmImage : RealmObject {
     @PrimaryKey
     var id: String = ""
     var url: String = ""

@@ -3,7 +3,9 @@ package com.mirdar.catapiapp.ui.image_list
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,56 +14,100 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.mirdar.catapiapp.R
 import com.mirdar.catapiapp.domain.model.CatImage
+import com.mirdar.catapiapp.ui.NavigationItem
 
 @Composable
 fun ImageListScreen(
     navController: NavController,
     imageListViewModel: ImageListViewModel = hiltViewModel()
 ) {
+    navController.navigate(NavigationItem.ImageDetail.route)
     val state by imageListViewModel.state.collectAsStateWithLifecycle()
+    val snackBarState = remember { SnackbarHostState() }
+    LaunchedEffect(state.error) {
+        if (state.error.isNotEmpty()) {
+            snackBarState.showSnackbar(
+                state.error,
+                withDismissAction = true,
+                duration = SnackbarDuration.Short
+            )
+        }
+    }
 
-    when {
-        state.isLoading -> CircularProgressIndicator()
-        state.error.isNotEmpty() -> {
-            Column {
-                Text("Error: ${state.error}")
-                Button(onClick = { imageListViewModel.handleIntent(ImageListIntent.LoadImageList) }) {
-                    Text("Retry")
+    LaunchedEffect(state.isLoading) {
+        if (state.isLoading && state.imageList.isNotEmpty()) {
+            snackBarState.showSnackbar(
+                "Updating...",
+                duration = SnackbarDuration.Indefinite
+            )
+        }
+    }
+
+    Scaffold(snackbarHost = {
+        SnackbarHost(snackBarState)
+    }) { padding ->
+        when {
+            state.imageList.isEmpty() && state.isLoading -> {
+                Box(Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
-        }
-
-        state.imageList.isNotEmpty() -> {
-            val imageList = state.imageList
-            LazyColumn {
-                items(
-                    count = imageList.size,
-                    key = { imageList[it].id }
+            state.imageList.isNotEmpty() -> {
+                val imageList = state.imageList
+                LazyVerticalGrid(
+                    GridCells.Fixed(3),
+                    modifier = Modifier
+                        .padding(padding),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    contentPadding = PaddingValues(8.dp)
                 ) {
-                    ImageItem(imageList[it])
+                    items(
+                        imageList,
+                        key = { it.id }
+                    ) {
+                        ImageItem(it)
+                    }
                 }
             }
         }
     }
+
 }
 
 @Composable
@@ -69,7 +115,7 @@ fun ImageListScreen(
 fun ImageItem(
     catImage: CatImage = CatImage(
         id = "123",
-        url = "test",
+        url = "https://cdn2.thecatapi.com/images/2co.jpg",
         width = 1280,
         height = 720,
         true
@@ -79,24 +125,25 @@ fun ImageItem(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .size(140.dp)
-            .background(color = colorResource(R.color.white))
+            .padding(2.dp)
+            .background(color = Color.LightGray, shape = RoundedCornerShape(8.dp))
     ) {
-        Image(
-            painter = painterResource(R.drawable.ic_launcher_background),
+        AsyncImage(
+            model = catImage.url,
             contentDescription = "",
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.size(120.dp)
         )
         Row(
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().padding(start = 10.dp, top = 10.dp)
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
-            Image(
-                painter = painterResource(R.drawable.baseline_favorite),
+            Icon(
+                imageVector = if (catImage.isFavourite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
                 contentDescription = "",
-                modifier = Modifier.size(16.dp),
-                colorFilter = ColorFilter.tint(color = if (catImage.isFavourite) Color.Red else Color.Gray)
+                modifier = Modifier.size(22.dp),
+                tint = if (catImage.isFavourite) Color.Red else Color.Gray
             )
             Spacer(Modifier.width(8.dp))
             Text("Like", color = Color.Black)

@@ -31,4 +31,10 @@ class LocalRepositoryImpl @Inject constructor(
     override suspend fun readImageDetail(imageId: String): ImageDetail? {
         return realm.where(RealmImageDetail::class).equalTo("id", imageId).findFirst()?.toDomain()
     }
+
+    override suspend fun clearImageList() {
+        realm.writeBlocking {
+            this.delete(RealmImage::class)
+        }
+    }
 }

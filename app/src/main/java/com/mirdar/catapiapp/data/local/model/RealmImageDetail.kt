@@ -8,7 +8,7 @@ import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
-class RealmImageDetail : RealmObject {
+open class RealmImageDetail : RealmObject {
     @PrimaryKey
     var id: String = ""
     var width: Int = 0

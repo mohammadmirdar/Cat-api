@@ -1,3 +1,6 @@
+package com.mirdar.catapiapp.di
+
+import com.mirdar.catapiapp.AppUtils
 import com.mirdar.catapiapp.data.local.model.RealmBreed
 import com.mirdar.catapiapp.data.local.model.RealmImage
 import com.mirdar.catapiapp.data.local.model.RealmImageDetail
@@ -18,8 +21,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ApplicationModule {
-
+object CatSingletonModule {
 
     @Provides
     @Singleton
@@ -31,7 +33,9 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideRequestInterceptor(): RequestInterceptor = RequestInterceptor()
+    fun provideRequestInterceptor(): RequestInterceptor {
+        return RequestInterceptor()
+    }
 
     @Provides
     @Singleton
@@ -46,7 +50,7 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideYotiRetrofitBuilder(okHttpClient: OkHttpClient): Retrofit =
+    fun provideRetrofitBuilder(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl(AppUtils.BASE_URL)
             .client(okHttpClient)
@@ -55,7 +59,8 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideCatApiService(retrofit: Retrofit) : CatApiService = retrofit.create(CatApiService::class.java)
+    fun provideCatApiService(retrofit: Retrofit): CatApiService =
+        retrofit.create(CatApiService::class.java)
 
 
     @Provides
