@@ -6,23 +6,30 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.mirdar.catapiapp.ui.image_list.ImageListScreen
+import kotlinx.serialization.Serializable
+
+@Serializable
+data object ImageListItem
+@Serializable
+data class ImageDetailItem(val imageId : String)
 
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
-    startDestination: String = NavigationItem.ImageList.route
+    navController: NavHostController
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = startDestination
+        startDestination = ImageListItem
     ) {
-        composable(NavigationItem.ImageList.route) {
-            ImageListScreen(navController)
+        composable<ImageListItem> {
+            ImageListScreen { id ->
+                navController.navigate(route = ImageDetailItem(imageId = id))
+            }
         }
 
-        composable(NavigationItem.ImageDetail.route) {
+        composable<ImageDetailItem>{
 
         }
     }

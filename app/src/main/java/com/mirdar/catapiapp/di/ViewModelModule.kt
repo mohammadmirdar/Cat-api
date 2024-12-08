@@ -28,7 +28,7 @@ object ViewModelModule {
     fun provideLocalRepository(realm: Realm): LocalRepository = LocalRepositoryImpl(realm)
 
     @Provides
-    @VectorComposable
+    @ViewModelScoped
     fun provideGetImageList(remoteRepository: RemoteRepository, localRepository: LocalRepository) =
         GetImageList(remoteRepository, localRepository)
 }

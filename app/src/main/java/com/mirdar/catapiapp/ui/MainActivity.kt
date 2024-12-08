@@ -24,8 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     AppNavHost(
-                        navController = navController,
-                        startDestination = NavigationItem.ImageList.route
+                        navController = navController
                     )
                 }
             }

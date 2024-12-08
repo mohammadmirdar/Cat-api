@@ -15,10 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ImageListViewModel @Inject constructor(
     private val getImageList: GetImageList,
-    val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val a = savedStateHandle.toRoute<>
     private val _state = MutableStateFlow(ImageListState())
     val state: StateFlow<ImageListState> = _state.asStateFlow()
 

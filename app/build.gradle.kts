@@ -84,12 +84,17 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     ksp ("com.google.dagger:dagger-compiler:2.53") // Dagger compiler
     androidTestImplementation(libs.hilt.android.testing)
-//    kaptAndroidTest(libs.hilt.android.compiler)
+    kspAndroidTest(libs.hilt.android.compiler)
 
     implementation(libs.coil.compose)
 
     implementation(libs.androidx.datastore.preferences)
 
-    implementation ("io.realm.kotlin:library-base:1.16.0")
+    implementation("io.realm.kotlin:library-base:1.16.0")
+
+    implementation("androidx.navigation:navigation-compose:2.8.4")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+
 
 }
