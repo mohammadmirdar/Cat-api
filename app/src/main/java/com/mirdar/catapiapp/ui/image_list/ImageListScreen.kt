@@ -21,15 +21,20 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,14 +46,20 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.mirdar.catapiapp.domain.model.CatImage
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImageListScreen(
     imageListViewModel: ImageListViewModel = hiltViewModel(),
-    onNavigateToImageDetail : (imageId : String) -> Unit
+    onNavigateToImageDetail: (imageId: String) -> Unit
 ) {
 
     val state by imageListViewModel.state.collectAsStateWithLifecycle()
     val snackBarState = remember { SnackbarHostState() }
+
+    LaunchedEffect(Unit) {
+        imageListViewModel.handleIntent(ImageListIntent.LoadImageList)
+    }
+
     LaunchedEffect(state.error) {
         if (state.error.isNotEmpty()) {
             snackBarState.showSnackbar(
@@ -68,15 +79,26 @@ fun ImageListScreen(
         }
     }
 
-    Scaffold(snackbarHost = {
-        SnackbarHost(snackBarState)
-    }) { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                { Text("Cat Images") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
+            )
+        },
+        snackbarHost = {
+            SnackbarHost(snackBarState)
+        }) { padding ->
         when {
             state.imageList.isEmpty() && state.isLoading -> {
                 Box(Modifier.fillMaxSize()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
+
             state.imageList.isNotEmpty() -> {
                 val imageList = state.imageList
                 LazyVerticalGrid(
@@ -91,9 +113,20 @@ fun ImageListScreen(
                         imageList,
                         key = { it.id }
                     ) {
-                        ImageItem(it) { id ->
-                            onNavigateToImageDetail(id)
-                        }
+                        ImageItem(
+                            it,
+                            onItemClicked = { id ->
+                                onNavigateToImageDetail(id)
+                                imageListViewModel.consume()
+                            },
+                            onLikeClicked = { id, isFavourite ->
+                                imageListViewModel.handleIntent(
+                                    ImageListIntent.SetImageFavourite(
+                                        id,
+                                        isFavourite
+                                    )
+                                )
+                            })
                     }
                 }
             }
@@ -112,7 +145,8 @@ fun ImageItem(
         height = 720,
         true
     ),
-    onItemClicked : (imageId : String) -> Unit = {}
+    onItemClicked: (imageId: String) -> Unit = {},
+    onLikeClicked: (imageId: String, isFavourite: Boolean) -> Unit = { id, f -> }
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -134,6 +168,7 @@ fun ImageItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable { onLikeClicked(catImage.id, !catImage.isFavourite) }
         ) {
             Icon(
                 imageVector = if (catImage.isFavourite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,

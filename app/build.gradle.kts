@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.hiltGradlePlugin)
     id ("io.realm.kotlin")
     id("com.google.devtools.ksp")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -94,7 +95,7 @@ dependencies {
 
     implementation("androidx.navigation:navigation-compose:2.8.4")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
 
 }

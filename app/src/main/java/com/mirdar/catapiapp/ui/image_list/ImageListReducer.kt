@@ -5,8 +5,8 @@ import com.vapebothq.vendingmachineapp.data.common.Result
 
 fun Result<List<CatImage>>.reduce(imageListState: ImageListState): ImageListState {
     return when (this) {
-        is Result.Error -> imageListState.copy(isLoading = false, error = this.exception.toString())
-        is Result.Loading -> imageListState.copy(isLoading = true)
-        is Result.Success -> imageListState.copy(isLoading = false, imageList = this.data)
+        is Result.Error -> imageListState.copy(isLoading = false, error = this.exception.toString(), catImage = CatImage.EMPTY)
+        is Result.Loading -> imageListState.copy(isLoading = true, catImage = CatImage.EMPTY)
+        is Result.Success -> imageListState.copy(isLoading = false, imageList = this.data, catImage = CatImage.EMPTY)
     }
 }

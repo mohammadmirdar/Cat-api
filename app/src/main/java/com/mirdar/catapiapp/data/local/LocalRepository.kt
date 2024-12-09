@@ -8,5 +8,6 @@ interface LocalRepository {
     suspend fun insertImageDetail(imageDetail: ImageDetail)
     suspend fun readImageList(): List<CatImage>
     suspend fun readImageDetail(imageId: String): ImageDetail?
+    suspend fun setImageFavourite(imageId: String, isFavourite: Boolean)
     suspend fun clearImageList()
 }

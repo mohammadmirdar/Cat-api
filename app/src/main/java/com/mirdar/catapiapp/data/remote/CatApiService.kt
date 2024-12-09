@@ -15,8 +15,8 @@ interface CatApiService {
     ) : Response<List<ImageRes>>
 
 
-    @GET(".")
+    @GET("{image_id}")
     suspend fun getImageDetail(
-        @Path("id") imageId : String
+        @Path("image_id") imageId : String
     ) : Response<ImageDetailRes>
 }

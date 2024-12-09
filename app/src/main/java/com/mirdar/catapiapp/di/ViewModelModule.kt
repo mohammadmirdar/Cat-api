@@ -6,7 +6,10 @@ import com.mirdar.catapiapp.data.local.LocalRepositoryImpl
 import com.mirdar.catapiapp.data.remote.CatApiService
 import com.mirdar.catapiapp.data.remote.RemoteRepository
 import com.mirdar.catapiapp.data.remote.RemoteRepositoryImpl
+import com.mirdar.catapiapp.domain.GetImageDetail
 import com.mirdar.catapiapp.domain.GetImageList
+import com.mirdar.catapiapp.domain.SetImageDetailFavourite
+import com.mirdar.catapiapp.domain.SetImageFavourite
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,4 +34,26 @@ object ViewModelModule {
     @ViewModelScoped
     fun provideGetImageList(remoteRepository: RemoteRepository, localRepository: LocalRepository) =
         GetImageList(remoteRepository, localRepository)
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetImageDetail(
+        remoteRepository: RemoteRepository,
+        localRepository: LocalRepository
+    ) = GetImageDetail(localRepository, remoteRepository)
+
+    @Provides
+    @ViewModelScoped
+    fun provideSetImageDetailFavourite(
+        remoteRepository: RemoteRepository,
+        localRepository: LocalRepository
+    ) = SetImageDetailFavourite(localRepository)
+
+    @Provides
+    @ViewModelScoped
+    fun provideSetImageFavourite(
+        remoteRepository: RemoteRepository,
+        localRepository: LocalRepository
+    ) = SetImageFavourite(localRepository)
+
 }

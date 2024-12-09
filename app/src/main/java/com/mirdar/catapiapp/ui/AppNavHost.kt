@@ -5,11 +5,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mirdar.catapiapp.ui.image_detail.ImageDetailScreen
 import com.mirdar.catapiapp.ui.image_list.ImageListScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object ImageListItem
+object ImageListItem
 @Serializable
 data class ImageDetailItem(val imageId : String)
 
@@ -30,7 +31,9 @@ fun AppNavHost(
         }
 
         composable<ImageDetailItem>{
-
+            ImageDetailScreen {
+                navController.navigateUp()
+            }
         }
     }
 }

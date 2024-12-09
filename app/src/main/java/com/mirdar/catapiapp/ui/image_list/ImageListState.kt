@@ -5,5 +5,6 @@ import com.mirdar.catapiapp.domain.model.CatImage
 data class ImageListState(
     val isLoading : Boolean = false,
     val error : String = "",
-    val imageList : List<CatImage> = emptyList()
+    val imageList : List<CatImage> = emptyList(),
+    val catImage: CatImage = CatImage()
 )

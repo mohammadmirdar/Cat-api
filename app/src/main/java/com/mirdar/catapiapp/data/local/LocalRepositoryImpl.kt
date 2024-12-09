@@ -20,7 +20,8 @@ class LocalRepositoryImpl @Inject constructor(
 
     override suspend fun insertImageDetail(imageDetail: ImageDetail) {
         realm.writeBlocking {
-            this.copyToRealm(imageDetail.toRealm())
+            val isFavourite = realm.where(RealmImage::class).equalTo("id", imageDetail.id).findFirst()?.isFavourite
+            this.copyToRealm(imageDetail.toRealm().apply { this.isFavourite = isFavourite ?: false })
         }
     }
 
@@ -30,6 +31,15 @@ class LocalRepositoryImpl @Inject constructor(
 
     override suspend fun readImageDetail(imageId: String): ImageDetail? {
         return realm.where(RealmImageDetail::class).equalTo("id", imageId).findFirst()?.toDomain()
+    }
+
+    override suspend fun setImageFavourite(imageId: String, isFavourite: Boolean) {
+        realm.writeBlocking {
+            this.where(RealmImageDetail::class).equalTo("id", imageId).findFirst()?.isFavourite =
+                isFavourite
+            this.where(RealmImage::class).equalTo("id", imageId).findFirst()?.isFavourite =
+                isFavourite
+        }
     }
 
     override suspend fun clearImageList() {

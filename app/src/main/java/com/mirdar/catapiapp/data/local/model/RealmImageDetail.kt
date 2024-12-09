@@ -14,11 +14,12 @@ open class RealmImageDetail : RealmObject {
     var width: Int = 0
     var height: Int = 0
     var url: String = ""
+    var isFavourite : Boolean = false
     var breeds: RealmList<RealmBreed> = realmListOf()
 }
 
 fun RealmImageDetail.toDomain(): ImageDetail =
-    ImageDetail(id, width, height, url, breeds.map { it.toDomain() })
+    ImageDetail(id, width, height, url,isFavourite, breeds.map { it.toDomain() })
 
 fun RealmBreed.toDomain(): Breed = Breed(
     weight?.toDomain() ?: Weight("", ""),

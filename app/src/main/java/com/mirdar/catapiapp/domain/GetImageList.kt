@@ -15,19 +15,24 @@ class GetImageList @Inject constructor(
     private val localRepository: LocalRepository
 ) {
     operator fun invoke(): Flow<Result<List<CatImage>>> = flow {
-        emit(Result.Success(localRepository.readImageList()))
-        remoteRepository.getAllImages().collect { allImageRes ->
-            when (allImageRes) {
-                is Result.Error -> emit(Result.Error(allImageRes.exception))
-                is Result.Loading -> emit(Result.Loading())
-                is Result.Success -> {
-                    localRepository.clearImageList()
-                    allImageRes.data.forEach {
-                        localRepository.insertImage(it)
+        val imageList = localRepository.readImageList()
+        if (imageList.isNotEmpty()) {
+            emit(Result.Success(imageList))
+        } else {
+            remoteRepository.getAllImages().collect { allImageRes ->
+                when (allImageRes) {
+                    is Result.Error -> emit(Result.Error(allImageRes.exception))
+                    is Result.Loading -> emit(Result.Loading())
+                    is Result.Success -> {
+                        localRepository.clearImageList()
+                        allImageRes.data.forEach {
+                            localRepository.insertImage(it)
+                        }
+                        emit(Result.Success(allImageRes.data))
                     }
-                    emit(Result.Success(allImageRes.data))
                 }
             }
         }
+
     }.flowOn(Dispatchers.IO)
 }

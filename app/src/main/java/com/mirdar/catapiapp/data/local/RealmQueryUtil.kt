@@ -19,7 +19,7 @@ fun <T : TypedRealmObject> TypedRealm.where(clazz: KClass<T>): RealmQuery<T> {
 }
 
 fun <T : TypedRealmObject> RealmQuery<T>.equalTo(field: String, value: String?): RealmQuery<T> {
-    return this.query("$field == $value")
+    return this.query("$field == $0", value)
 }
 
 fun <T : TypedRealmObject> RealmQuery<T>.equalTo(field: String, value: Int?): RealmQuery<T> {
