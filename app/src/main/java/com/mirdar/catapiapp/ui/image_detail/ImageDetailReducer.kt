@@ -1,7 +1,7 @@
 package com.mirdar.catapiapp.ui.image_detail
 
 import com.mirdar.catapiapp.domain.model.ImageDetail
-import com.vapebothq.vendingmachineapp.data.common.Result
+import com.mirdar.catapiapp.data.remote.common.Result
 
 fun Result<ImageDetail?>.reduce(imageDetailState: ImageDetailState): ImageDetailState {
     return when (this) {

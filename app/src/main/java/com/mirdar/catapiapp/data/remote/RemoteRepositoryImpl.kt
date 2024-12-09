@@ -4,7 +4,7 @@ import com.mirdar.catapiapp.data.remote.model.toDomain
 import com.mirdar.catapiapp.domain.model.CatImage
 import com.mirdar.catapiapp.domain.model.ImageDetail
 import com.mirdar.catapiapp.data.remote.common.CallErrors
-import com.vapebothq.vendingmachineapp.data.common.Result
+import com.mirdar.catapiapp.data.remote.common.Result
 import com.mirdar.catapiapp.data.remote.common.applyCommonSideEffects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

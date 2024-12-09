@@ -1,7 +1,7 @@
 package com.mirdar.catapiapp.ui.image_list
 
 import com.mirdar.catapiapp.domain.model.CatImage
-import com.vapebothq.vendingmachineapp.data.common.Result
+import com.mirdar.catapiapp.data.remote.common.Result
 
 fun Result<List<CatImage>>.reduce(imageListState: ImageListState): ImageListState {
     return when (this) {

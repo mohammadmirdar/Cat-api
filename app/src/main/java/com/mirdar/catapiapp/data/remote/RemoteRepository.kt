@@ -2,7 +2,7 @@ package com.mirdar.catapiapp.data.remote
 
 import com.mirdar.catapiapp.domain.model.CatImage
 import com.mirdar.catapiapp.domain.model.ImageDetail
-import com.vapebothq.vendingmachineapp.data.common.Result
+import com.mirdar.catapiapp.data.remote.common.Result
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteRepository {

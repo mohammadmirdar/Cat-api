@@ -1,7 +1,6 @@
 package com.mirdar.catapiapp.data.remote.common
 
 import com.mirdar.catapiapp.AppUtils
-import com.vapebothq.vendingmachineapp.data.common.Result
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
