@@ -67,11 +67,17 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
     testImplementation(libs.junit)
+    testImplementation (libs.mockito.core)
+    testImplementation (libs.mockito.kotlin)
+    testImplementation (libs.kotlinx.coroutines.test)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
@@ -83,7 +89,7 @@ dependencies {
     implementation(libs.hilt.compose)
     implementation(libs.hilt)
     ksp(libs.hilt.android.compiler)
-    ksp ("com.google.dagger:dagger-compiler:2.53") // Dagger compiler
+    ksp (libs.dagger.compiler) // Dagger compiler
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.android.compiler)
 
@@ -91,15 +97,10 @@ dependencies {
 
     implementation(libs.androidx.datastore.preferences)
 
-    implementation("io.realm.kotlin:library-base:1.16.0")
+    implementation(libs.library.base)
 
-    implementation("androidx.navigation:navigation-compose:2.8.4")
+    implementation(libs.androidx.navigation.compose)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation(libs.kotlinx.serialization.json)
 
-
-    testImplementation ("junit:junit:4.13.2")
-    testImplementation ("org.mockito:mockito-core:5.2.0")
-    testImplementation ("org.mockito.kotlin:mockito-kotlin:5.0.0")
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 }
