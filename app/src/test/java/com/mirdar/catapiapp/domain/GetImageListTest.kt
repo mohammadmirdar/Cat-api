@@ -1,10 +1,9 @@
-package com.mirdar.catapiapp
+package com.mirdar.catapiapp.domain
 
 import com.mirdar.catapiapp.data.local.LocalRepository
 import com.mirdar.catapiapp.data.remote.RemoteRepository
 import com.mirdar.catapiapp.data.remote.common.CallErrors
 import com.mirdar.catapiapp.data.remote.common.Result
-import com.mirdar.catapiapp.domain.GetImageList
 import com.mirdar.catapiapp.domain.model.CatImage
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
