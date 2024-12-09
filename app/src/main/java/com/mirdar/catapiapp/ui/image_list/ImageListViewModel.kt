@@ -1,11 +1,9 @@
 package com.mirdar.catapiapp.ui.image_list
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mirdar.catapiapp.domain.GetImageList
 import com.mirdar.catapiapp.domain.SetImageFavourite
-import com.mirdar.catapiapp.domain.model.CatImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,8 +20,6 @@ class ImageListViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(ImageListState())
     val state: StateFlow<ImageListState> = _state.asStateFlow()
-
-    private val imageList = mutableListOf<CatImage>()
 
     fun handleIntent(imageListIntent: ImageListIntent) {
         when (imageListIntent) {
@@ -43,8 +39,8 @@ class ImageListViewModel @Inject constructor(
                     it.copy(
                         isLoading = false,
                         error = "",
-                        imageList.map {
-                            if (it.id == res.data.id) it.copy(isFavourite = res.data.isFavourite) else it
+                        _state.value.imageList.map {
+                            if (it.id == res.data.id) res.data else it
                         })
                 }
             }
@@ -55,8 +51,6 @@ class ImageListViewModel @Inject constructor(
         viewModelScope.launch {
             getImageList().collect { res ->
                 _state.update { res.reduce(_state.value) }
-                imageList.clear()
-                imageList.addAll(_state.value.imageList)
             }
         }
     }
